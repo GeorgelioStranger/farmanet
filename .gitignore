@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+
+# Production
+frontend/dist/
+
+# Environment
+.env
+backend/.env
+
+# IDE and System Files
+.vscode/
+.DS_Store
+*.log
