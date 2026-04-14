@@ -7,6 +7,7 @@ const auth = require('../middleware/auth');
 router.get('/:patientId', auth, async (req, res) => {
     try {
         const history = await MedicalHistory.find({ patient: req.params.patientId })
+            .populate('doctor', 'name')
             .sort({ date: -1 });
         res.json(history);
     } catch (error) {
@@ -17,14 +18,19 @@ router.get('/:patientId', auth, async (req, res) => {
 // Add new note to history
 router.post('/', auth, async (req, res) => {
     try {
-        const { patientId, notes } = req.body;
+        const { patientId, notes, condition, prescriptions } = req.body;
         const entry = new MedicalHistory({
             patient: patientId,
             notes,
+            condition,
+            prescriptions,
             doctor: req.user.id
         });
         await entry.save();
-        res.status(201).json(entry);
+        
+        // Return populated doctor
+        const populatedEntry = await MedicalHistory.findById(entry._id).populate('doctor', 'name');
+        res.status(201).json(populatedEntry);
     } catch (error) {
         res.status(400).json({ message: 'Error al agregar nota' });
     }
