@@ -16,30 +16,30 @@ const app = express();
 
 const seedDefaultAdmin = async () => {
     try {
-        const count = await User.countDocuments();
-        if (count === 0) {
-            console.log('Base de datos vacía. Creando usuarios administrativos por defecto...');
-            const defaultUsers = [
-                {
-                    name: 'Doctor X',
-                    email: 'xxd06268@gmail.com',
-                    password: 'password123',
-                    role: 'doctor'
-                },
-                {
-                    name: 'Doctor Stranger',
-                    email: 'strangerdangerdj@gmail.com',
-                    password: 'password123',
-                    role: 'doctor'
-                }
-            ];
-            for (const userData of defaultUsers) {
+        const defaultUsers = [
+            {
+                name: 'Doctor X',
+                email: 'xxd06268@gmail.com',
+                password: 'password123',
+                role: 'doctor'
+            },
+            {
+                name: 'Doctor Stranger',
+                email: 'strangerdangerdj@gmail.com',
+                password: 'password123',
+                role: 'doctor'
+            }
+        ];
+
+        for (const userData of defaultUsers) {
+            const userExists = await User.findOne({ email: userData.email });
+            if (!userExists) {
+                console.log(`Creando usuario administrativo: ${userData.email}`);
                 await User.create(userData);
             }
-            console.log('Usuarios creados con éxito.');
         }
     } catch (err) {
-        console.error('Error al sembrar usuario:', err);
+        console.error('Error al sembrar usuarios:', err);
     }
 };
 
