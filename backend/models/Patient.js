@@ -8,6 +8,13 @@ const patientSchema = new mongoose.Schema({
     symptoms: { type: String, required: true },
     history: { type: String }, // Medical history summary
     medications: { type: String },
+    prescriptions: [{
+        medication: String,
+        quantity: String,
+        frequency: String,
+        duration: String,
+        date: { type: Date, default: Date.now }
+    }],
     area: { type: String, required: true }, 
     status: { 
         type: String, 

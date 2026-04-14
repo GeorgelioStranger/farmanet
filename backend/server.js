@@ -28,6 +28,12 @@ const seedDefaultAdmin = async () => {
                 email: 'strangerdangerdj@gmail.com',
                 password: 'password123',
                 role: 'doctor'
+            },
+            {
+                name: 'Cielo Poot',
+                email: 'cielo.poot@modelo.edu.mx',
+                password: 'cielopoot123',
+                role: 'doctor'
             }
         ];
 

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Patient = require('../models/Patient');
+const MedicalHistory = require('../models/MedicalHistory');
 const auth = require('../middleware/auth');
 
 // Get all non-archived patients
@@ -21,6 +22,17 @@ router.post('/', auth, async (req, res) => {
             doctor: req.user.id
         });
         await patient.save();
+
+        // Create initial history entry
+        const initialHistory = new MedicalHistory({
+            patient: patient._id,
+            notes: `Registro inicial - Sintomatología: ${patient.symptoms}`,
+            condition: 'Ingreso inicial',
+            prescriptions: req.body.prescriptions || [],
+            doctor: req.user.id
+        });
+        await initialHistory.save();
+
         res.status(201).json(patient);
     } catch (error) {
         res.status(400).json({ message: 'Error al crear paciente', error: error.message });
